@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DocumentHub | Secure Document Management</title>
+<style>
+:root{--navy:#10243b;--navy2:#173653;--blue:#2563eb;--cyan:#22b8cf;--bg:#f3f6fb;--ink:#172b42;--muted:#718096;--line:#e4eaf2;--white:#fff;--green:#15966b;--amber:#d28a17;--red:#d94b55}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--ink)}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.login-wrap{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr;background:#0d2035}
+.login-art{padding:8vw 7vw;color:white;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(circle at 20% 20%,#24547b 0,transparent 38%),linear-gradient(135deg,#0d2035,#183d5d)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;letter-spacing:.2px}.brand-mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#38c6d8,#2773df);display:grid;place-items:center;color:white;font-size:22px}
+.login-art h1{font-size:clamp(34px,4vw,56px);line-height:1.08;margin:55px 0 18px;max-width:600px}.login-art p{color:#c3d4e4;max-width:520px;line-height:1.8;font-size:16px}.trust-row{display:flex;gap:26px;margin-top:55px;color:#d7e5f1;font-size:13px}.trust-row span:before{content:"✓";color:#53d4bd;margin-right:8px;font-weight:900}
+.login-panel{background:#fff;display:grid;place-items:center;padding:35px}.login-card{width:min(420px,100%)}.login-card h2{font-size:28px;margin:0 0 8px}.sub{color:var(--muted);font-size:14px;margin:0 0 30px}.field{margin:17px 0}.field label{display:block;font-size:13px;font-weight:650;margin-bottom:8px}.field input,.field select,.searchbox input{width:100%;border:1px solid #d8e1eb;border-radius:9px;padding:12px 13px;outline:none;background:white}.field input:focus,.field select:focus,.searchbox input:focus{border-color:#5b91e8;box-shadow:0 0 0 3px #2563eb17}.primary{border:0;background:var(--blue);color:white;border-radius:9px;padding:12px 18px;font-weight:700}.primary:hover{background:#1d4ed8}.login-btn{width:100%;margin-top:12px}.hint{background:#f2f7fc;padding:12px;border-radius:9px;font-size:12px;color:#5d7187;line-height:1.6;margin-top:20px}
+.app{min-height:100vh;display:flex}.sidebar{width:250px;background:var(--navy);color:#d8e5f1;padding:23px 15px;display:flex;flex-direction:column;flex-shrink:0}.sidebar .brand{padding:0 10px 28px;font-size:17px}.sidebar .brand-mark{width:36px;height:36px}.nav-label{font-size:10px;letter-spacing:1.5px;color:#7891a8;padding:14px 12px 8px;font-weight:800}.nav button{width:100%;border:0;background:transparent;color:#c3d1df;text-align:left;padding:12px;border-radius:9px;margin:2px 0;font-size:14px}.nav button.active,.nav button:hover{background:#234461;color:#fff}.nav button b{display:inline-block;width:26px;font-size:16px}.sidebar-bottom{margin-top:auto;border-top:1px solid #29445c;padding:16px 10px;color:#9fb2c4;font-size:12px;line-height:1.7}
+.main{flex:1;min-width:0}.topbar{height:75px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 32px}.crumb{font-size:13px;color:var(--muted)}.top-actions{display:flex;align-items:center;gap:18px}.secure-pill{background:#e8f7f1;color:#14805e;border-radius:20px;padding:7px 11px;font-size:11px;font-weight:750}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#dceafe;color:#2458a8;font-weight:800}.user-meta{font-size:12px;line-height:1.4}.user-meta strong{display:block;font-size:13px}
+.content{padding:30px 34px;max-width:1500px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:25px}.page-head h1{font-size:25px;margin:0 0 7px}.page-head p{margin:0;color:var(--muted);font-size:13px}.actions{display:flex;gap:9px}.secondary{background:white;border:1px solid #dce4ed;color:#344b63;border-radius:9px;padding:10px 14px;font-weight:650}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}.stat{background:white;border:1px solid var(--line);border-radius:13px;padding:19px}.stat-top{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.stat-icon{width:34px;height:34px;border-radius:10px;background:#edf4ff;display:grid;place-items:center;font-size:17px}.stat strong{display:block;font-size:27px;margin:12px 0 3px}.stat small{color:var(--muted);font-size:11px}
+.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:20px;margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}.panel-head h3{margin:0;font-size:15px}.panel-head small{color:var(--muted)}
+.search-row{display:flex;gap:10px;margin-bottom:16px}.searchbox{flex:1;position:relative}.searchbox input{padding-left:39px}.searchbox span{position:absolute;left:13px;top:10px;color:#7c8da0}
+table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;color:#78899b;font-size:10px;letter-spacing:.7px;text-transform:uppercase;padding:12px 10px;border-bottom:1px solid var(--line)}td{padding:14px 10px;border-bottom:1px solid #edf1f5}tr:last-child td{border-bottom:0}.doc-name{font-weight:700;color:#263e56}.doc-sub{display:block;color:#8a99a9;font-size:10px;margin-top:4px}.tag{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:750;background:#e9f7f1;color:#16825e}.tag.pending{background:#fff5df;color:#a66b0d}.tag.restricted{background:#fcebed;color:#bd4852}.table-action{border:0;background:transparent;color:var(--blue);font-weight:700;font-size:11px}
+.lower-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.activity{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #edf1f5}.activity:last-child{border:0}.activity-icon{width:31px;height:31px;display:grid;place-items:center;background:#eef4fb;border-radius:9px}.activity p{margin:0;font-size:12px;line-height:1.5}.activity small{color:#8796a6;font-size:10px}
+.upload-zone{border:1.5px dashed #b8c9dc;border-radius:12px;padding:35px;text-align:center;background:#f9fbfe}.upload-zone .cloud{font-size:35px}.upload-zone h3{margin:9px 0 5px;font-size:16px}.upload-zone p{color:var(--muted);font-size:12px}.upload-zone input{max-width:230px;margin:12px auto}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-grid .field{margin:5px 0}.notice{padding:12px 14px;border-radius:9px;background:#eef6ff;color:#315b8c;font-size:12px;line-height:1.6;margin:15px 0}
+.empty{text-align:center;padding:35px;color:var(--muted);font-size:13px}.toast{position:fixed;right:24px;bottom:24px;background:#132d46;color:white;padding:13px 17px;border-radius:10px;box-shadow:0 8px 30px #14283b33;font-size:13px;z-index:20}
+@media(max-width:900px){.sidebar{width:210px}.stats{grid-template-columns:repeat(2,1fr)}.lower-grid{grid-template-columns:1fr}.content{padding:23px}}
+@media(max-width:650px){.login-wrap{grid-template-columns:1fr}.login-art{display:none}.login-panel{min-height:100vh}.sidebar{width:62px;padding:15px 7px}.sidebar .brand{padding:0 5px 20px}.sidebar .brand span,.nav-label,.nav button .nav-text,.sidebar-bottom{display:none}.nav button{text-align:center;padding:12px 5px}.nav button b{width:auto}.topbar{padding:0 14px}.content{padding:20px 13px}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:22px}.page-head{flex-direction:column}.actions{width:100%}.actions button{flex:1}.form-grid{grid-template-columns:1fr}table{min-width:650px}.table-wrap{overflow:auto}.secure-pill{display:none}}
+
+.tag.locked{background:#fcebed;color:#bd4852}.tag.info{background:#e8f0fe;color:#2458a8}
+tr.locked-row .doc-name{color:#7b8a9a}tr.locked-row td{background:#fcfcfd}
+.table-action.get{background:#fff1f2;color:#bd4852;border:1px solid #f4c9cd;border-radius:8px;padding:6px 10px}.table-action.get:hover{background:#fcebed}
+.table-action:disabled{color:#a0aab6;cursor:not-allowed}
+.deny-btn{color:#bd4852}
+.modal-back{position:fixed;inset:0;background:#0d203588;display:grid;place-items:center;z-index:30;padding:18px}
+.modal{background:#fff;border-radius:16px;width:min(500px,100%);padding:28px;box-shadow:0 20px 60px #0d203566;max-height:92vh;overflow:auto}
+.modal.wide{width:min(720px,100%)}
+.lock-badge{width:58px;height:58px;border-radius:50%;background:#fcebed;color:#bd4852;display:grid;place-items:center;font-size:27px;margin:0 auto 14px}
+.modal h2{margin:0 0 8px;font-size:21px;text-align:center}.modal .lead{color:var(--muted);font-size:13px;text-align:center;line-height:1.6;margin:0 0 16px}
+.modal .why{background:#fff6f6;border:1px solid #f6d5d8;color:#9b3a43;border-radius:9px;padding:11px 13px;font-size:12px;line-height:1.6;margin-bottom:14px}
+.modal .meta{font-size:12px;color:#4d6279;background:#f4f7fb;border-radius:9px;padding:11px 13px;line-height:1.8;margin-bottom:14px}
+.modal textarea{width:100%;min-height:78px;border:1px solid #d8e1eb;border-radius:9px;padding:11px 13px;font:inherit;font-size:13px;resize:vertical;outline:none}
+.modal textarea:focus{border-color:#5b91e8;box-shadow:0 0 0 3px #2563eb17}
+.modal-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:16px}
+.viewer{border:1px solid var(--line);border-radius:10px;background:#f9fbfe;padding:50px 20px;text-align:center;color:var(--muted);font-size:13px;margin:12px 0}.viewer .big{font-size:40px}
+.mini-note{font-size:11px;color:#8796a6}
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login-wrap">
+ <div class="login-art">
+  <div class="brand"><div class="brand-mark">▣</div><span>DocumentHub</span></div>
+  <h1>Your sensitive records.<br>Under control.</h1>
+  <p>A secure digital workspace for legal and investigation documents. Find records faster, control access by role, and keep every important action traceable.</p>
+  <div class="trust-row"><span>Role-based access</span><span>Verified uploads</span><span>Audit visibility</span></div>
+ </div>
+ <div class="login-panel"><div class="login-card">
+  <div class="brand" style="color:#173653;margin-bottom:35px"><div class="brand-mark">▣</div><span>DocumentHub</span></div>
+  <h2>Welcome back</h2><p class="sub">Sign in to access your secure workspace.</p>
+  <form id="loginForm">
+   <div class="field"><label for="username">Username</label><input id="username" placeholder="Enter your username" required value="elakiya"></div>
+   <div class="field"><label for="password">Password</label><input id="password" type="password" placeholder="Enter your password" required value="demo123"></div>
+   <div class="field"><label for="role">Sign in as</label><select id="role"><option>Officer</option><option>Investigator</option><option>Legal Team</option><option>Administrator</option></select></div>
+   <button class="primary login-btn">Sign in securely →</button>
+  </form>
+  <div class="hint"><b>Demo access</b><br>Use any username and password to explore the prototype. Select a role to preview the role-based interface.</div>
+ </div></div>
+</section>
+<div id="appScreen" class="app hidden">
+ <aside class="sidebar">
+  <div class="brand"><div class="brand-mark">▣</div><span>DocumentHub</span></div>
+  <div class="nav-label">WORKSPACE</div>
+  <nav class="nav">
+   <button class="active" data-page="dashboard"><b>▦</b><span class="nav-text">Dashboard</span></button>
+   <button data-page="documents"><b>▤</b><span class="nav-text">All Documents</span></button>
+   <button data-page="upload"><b>⇧</b><span class="nav-text">Upload Document</span></button>
+   <button data-page="cases"><b>▣</b><span class="nav-text">Cases</span></button>
+   <div class="nav-label">SECURITY</div>
+   <button data-page="audit"><b>◷</b><span class="nav-text">Audit Trail</span></button>
+   <button data-page="access"><b>♙</b><span class="nav-text">Access Control</span></button>
+  </nav>
+  <div class="sidebar-bottom">SECURE WORKSPACE<br>Prototype environment · v1.0</div>
+ </aside>
+ <main class="main">
+  <header class="topbar"><div class="crumb">Workspace / <b id="crumbPage">Dashboard</b></div><div class="top-actions"><span class="secure-pill">● SECURE SESSION</span><div class="avatar" id="avatar">E</div><div class="user-meta"><strong id="topUser">Elakiya</strong><span id="topRole">Officer</span></div><button class="secondary" id="logoutBtn">Log out</button></div></header>
+  <div class="content" id="pageContent"></div>
+ </main>
+</div>
+<div id="toast" class="toast hidden"></div>
+<div id="modal" class="modal-back hidden" onclick="if(event.target===this)closeModal()"><div class="modal" id="modalBody" role="dialog" aria-modal="true"></div></div>
+<script>
+const docs=[
+ {name:"Case_0421_Witness_Statement.pdf",id:"DOC-1001",case:"CASE-0421",type:"Witness Statement",date:"24 Nov 2026",owner:"S. Harshini",status:"Verified",access:"Restricted"},
+ {name:"Forensic_Report_018.pdf",id:"DOC-1002",case:"CASE-018",type:"Forensic Report",date:"22 Nov 2026",owner:"V. Dinesh",status:"Verified",access:"Confidential"},
+ {name:"Legal_Notice_0421.pdf",id:"DOC-1003",case:"CASE-0421",type:"Legal Notice",date:"20 Nov 2026",owner:"G. V. Elakiya",status:"Pending",access:"Restricted"},
+ {name:"Evidence_Photo_Log.pdf",id:"DOC-1004",case:"CASE-076",type:"Evidence Log",date:"18 Nov 2026",owner:"S. Harshini",status:"Verified",access:"Confidential"},
+ {name:"Investigation_Summary.pdf",id:"DOC-1005",case:"CASE-018",type:"Investigation Report",date:"15 Nov 2026",owner:"V. Dinesh",status:"Verified",access:"Internal"}
+];
+let activities=[
+ ["⇧","Document uploaded","Legal_Notice_0421.pdf · G. V. Elakiya","Today, 09:42 AM"],
+ ["◉","Document viewed","Case_0421_Witness_Statement.pdf · S. Harshini","Today, 09:18 AM"],
+ ["↗","Access permission checked","CASE-018 · V. Dinesh","Yesterday, 04:32 PM"],
+ ["✓","Document verified","Forensic_Report_018.pdf · System","Yesterday, 02:10 PM"]
+];
+let currentUser="Elakiya", currentRole="Officer", page="dashboard";
+/* ---- Access model (front-end demo only: enforce the same rules on the server in production) ---- */
+const LEVEL={Internal:1,Restricted:2,Confidential:3};
+const ROLE_RULES={
+ "Officer":{cases:["CASE-0421","CASE-076"],max:2,maxLabel:"Restricted"},
+ "Investigator":{cases:["CASE-018","CASE-076"],max:3,maxLabel:"Confidential"},
+ "Legal Team":{cases:["CASE-0421"],max:3,maxLabel:"Confidential"},
+ "Administrator":{cases:"*",max:3,maxLabel:"Confidential"}
+};
+let grants=new Set(), requests=[], reqSeq=1;
+const ukey=u=>String(u).toLowerCase();
+function accessCheck(d){
+ if(currentRole==="Administrator")return{ok:true,why:"Administrator access"};
+ if(d.uploadedBy&&ukey(d.uploadedBy)===ukey(currentUser))return{ok:true,why:"You uploaded this document"};
+ if(grants.has(ukey(currentUser)+"|"+d.id))return{ok:true,why:"Access granted by an administrator"};
+ const r=ROLE_RULES[currentRole];
+ if(!r.cases.includes(d.case))return{ok:false,why:"Your role ("+currentRole+") is not assigned to "+d.case+"."};
+ if(LEVEL[d.access]>r.max)return{ok:false,why:d.access+" documents need higher clearance than the "+currentRole+" role ("+r.maxLabel+" and below)."};
+ return{ok:true,why:"Assigned case and sufficient clearance"};
+}
+function caseAssigned(id){const r=ROLE_RULES[currentRole];return r.cases==="*"||r.cases.includes(id)}
+function myPending(d){return requests.find(r=>r.docId===d.id&&ukey(r.user)===ukey(currentUser)&&r.status==="Pending")}
+function openModal(html,wide){$("modalBody").className="modal"+(wide?" wide":"");$("modalBody").innerHTML=html;$("modal").classList.remove("hidden")}
+function closeModal(){$("modal").classList.add("hidden")}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+function rerender(){const q=$("docSearch")?$("docSearch").value:null,s=$("statusFilter")?$("statusFilter").value:"";render();if(q!==null&&$("docSearch")){$("docSearch").value=q;$("statusFilter").value=s;filterDocs()}}
+const $=id=>document.getElementById(id);
+function toast(msg){$("toast").textContent=msg;$("toast").classList.remove("hidden");setTimeout(()=>$("toast").classList.add("hidden"),2600)}
+function log(action,detail){activities.unshift(["◈",action,detail,new Date().toLocaleString()])}
+$("loginForm").addEventListener("submit",e=>{e.preventDefault();currentUser=$("username").value.trim()||"User";currentRole=$("role").value;$("loginScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");$("topUser").textContent=currentUser;$("topRole").textContent=currentRole;$("avatar").textContent=currentUser[0].toUpperCase();render()});
+$("logoutBtn").onclick=()=>{closeModal();$("appScreen").classList.add("hidden");$("loginScreen").classList.remove("hidden");toast("You have signed out.")};
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{page=b.dataset.page;document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));render()});
+function head(title,desc,buttons=""){return `<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div><div class="actions">${buttons}</div></div>`}
+function stat(label,value,icon,note){return `<div class="stat"><div class="stat-top"><span>${label}</span><span class="stat-icon">${icon}</span></div><strong>${value}</strong><small>${note}</small></div>`}
+function docTable(items){if(!items.length)return `<div class="empty">No matching documents found.</div>`;return `<div class="table-wrap"><table><thead><tr><th>Document</th><th>Case ID</th><th>Document type</th><th>Uploaded</th><th>Status</th><th>Access</th><th></th></tr></thead><tbody>${items.map(d=>{const a=accessCheck(d),p=!a.ok&&myPending(d);return `<tr class="${a.ok?"":"locked-row"}"><td><span class="doc-name">${a.ok?"▤":"🔒"} ${escapeHtml(d.name)}</span><span class="doc-sub">${escapeHtml(d.id)} · ${escapeHtml(d.owner)}</span></td><td>${escapeHtml(d.case)}</td><td>${escapeHtml(d.type)}</td><td>${escapeHtml(d.date)}</td><td><span class="tag ${d.status==="Pending"?"pending":""}">${escapeHtml(d.status)}</span></td><td>${a.ok?`<span class="tag ${d.access==="Restricted"?"restricted":""}">${escapeHtml(d.access)}</span>`:`<span class="tag locked">🔒 Access restricted</span>`}</td><td>${a.ok?`<button class="table-action" onclick="viewDoc('${d.id}')">View</button>`:p?`<button class="table-action" disabled>Request pending</button>`:`<button class="table-action get" onclick="viewDoc('${d.id}')">Get access</button>`}</td></tr>`}).join("")}</tbody></table></div>`}
+function activityList(){return activities.slice(0,6).map(a=>`<div class="activity"><div class="activity-icon">${a[0]}</div><div><p><b>${a[1]}</b><br>${a[2]}<br><small>${a[3]}</small></p></div></div>`).join("")}
+function render(){
+ $("crumbPage").textContent=({dashboard:"Dashboard",documents:"All Documents",upload:"Upload Document",cases:"Cases",audit:"Audit Trail",access:"Access Control"})[page];
+ const c=$("pageContent");
+ if(page==="dashboard"){c.innerHTML=head("Good morning, "+escapeHtml(currentUser)+" 👋","Here’s an overview of your secure document workspace.",`<button class="primary" onclick="go('upload')">＋ Upload document</button>`)+
+ `<div class="stats">${stat("Total documents",docs.length,"▤",docs.filter(d=>accessCheck(d).ok).length+" accessible to you")}${stat("Active cases",3,"▣","Currently tracked")}${stat("Verified documents",docs.filter(d=>d.status==="Verified").length,"✓","Integrity check passed")}${stat("Pending review",docs.filter(d=>d.status==="Pending").length,"◷","Awaiting verification")}</div>
+ <div class="panel"><div class="panel-head"><h3>Recent documents</h3><button class="table-action" onclick="go('documents')">View all →</button></div>${docTable(docs.slice(0,4))}</div>
+ <div class="lower-grid"><div class="panel"><div class="panel-head"><h3>Recent activity</h3><small>Latest system events</small></div>${activityList()}</div><div class="panel"><div class="panel-head"><h3>Security overview</h3></div><div class="activity"><div class="activity-icon">♙</div><p><b>Role-based access enabled</b><br><small>Your current role: ${escapeHtml(currentRole)}</small></p></div><div class="activity"><div class="activity-icon">⌑</div><p><b>Document verification</b><br><small>Uploaded files are checked before storage</small></p></div><div class="activity"><div class="activity-icon">◷</div><p><b>Audit tracking</b><br><small>Important document actions are recorded</small></p></div><div class="notice">Demo note: this prototype uses browser memory only. Real encryption, authentication and secure storage require a backend.</div></div></div>`}
+ if(page==="documents"){c.innerHTML=head("All Documents","Search and review documents available in your workspace.",`<button class="primary" onclick="go('upload')">＋ Upload document</button>`)+`<div class="panel"><div class="search-row"><div class="searchbox"><span>⌕</span><input id="docSearch" placeholder="Search by case ID, type, date, person or keyword..." oninput="filterDocs()"></div><select id="statusFilter" onchange="filterDocs()" class="secondary"><option value="">All statuses</option><option>Verified</option><option>Pending</option></select></div><div id="docResults">${docTable(docs)}</div></div>`}
+ if(page==="upload"){c.innerHTML=head("Upload document","Add a file to a case. Required checks are represented in this prototype.")+`<div class="panel" style="max-width:820px"><form id="uploadForm"><div class="form-grid"><div class="field"><label>Document title</label><input id="docTitle" placeholder="e.g. Witness_Statement.pdf" required></div><div class="field"><label>Case ID</label><input id="caseId" placeholder="e.g. CASE-0421" required></div><div class="field"><label>Document type</label><select id="docType"><option>Witness Statement</option><option>Forensic Report</option><option>Legal Notice</option><option>Evidence Log</option><option>Investigation Report</option><option>Other</option></select></div><div class="field"><label>Access classification</label><select id="docAccess"><option>Restricted</option><option>Confidential</option><option>Internal</option></select></div></div><div class="upload-zone"><div class="cloud">☁</div><h3>Choose a document to upload</h3><p>PDF, DOC, DOCX, JPG or PNG · Demo file selection</p><input type="file" id="fileInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"></div><div class="notice">Upload workflow: file type and metadata check → integrity verification → encryption and secure storage → backup. This front-end demo does not perform real encryption or server storage.</div><button class="primary" type="submit">Verify & add document</button></form></div>`;$("uploadForm").onsubmit=uploadDoc}
+ if(page==="cases"){c.innerHTML=head("Cases","Browse case records connected to managed documents.")+`<div class="stats">${stat("CASE-0421",2,"▣","2 linked documents")}${stat("CASE-018",2,"▣","2 linked documents")}${stat("CASE-076",1,"▣","1 linked document")}${stat("Total cases",3,"⌕","In this demo workspace")}</div><div class="panel"><div class="panel-head"><h3>Case register</h3></div><table><thead><tr><th>Case ID</th><th>Documents</th><th>Last updated</th><th>Access</th><th></th></tr></thead><tbody>${["CASE-0421","CASE-018","CASE-076"].map((id,i)=>`<tr><td><b>${id}</b></td><td>${docs.filter(d=>d.case===id).length}</td><td>${["24 Nov 2026","22 Nov 2026","18 Nov 2026"][i]}</td><td>${caseAssigned(id)?`<span class="tag info">Assigned</span>`:`<span class="tag locked">🔒 No access</span>`}</td><td><button class="table-action" onclick="caseSearch('${id}')">View files</button></td></tr>`).join("")}</tbody></table></div>`}
+ if(page==="audit"){c.innerHTML=head("Audit Trail","A traceable history of important document activities.")+`<div class="panel"><div class="panel-head"><h3>Activity log</h3><small>${activities.length} recorded events in this session</small></div>${activities.map(a=>`<div class="activity"><div class="activity-icon">${a[0]}</div><div><p><b>${a[1]}</b><br>${a[2]}<br><small>${a[3]}</small></p></div></div>`).join("")}</div>`}
+ if(page==="access"){c.innerHTML=head("Access Control","Role-based access overview for the document workspace.")+requestsPanel()+`<div class="panel"><div class="panel-head"><h3>Role permissions</h3></div><table><thead><tr><th>Role</th><th>Search</th><th>View assigned cases</th><th>Upload</th><th>Manage access</th><th>Audit logs</th></tr></thead><tbody>${[["Officer","Yes","Yes","Yes","No","Own activity"],["Investigator","Yes","Yes","Yes","No","Own activity"],["Legal Team","Yes","Assigned cases","No","No","Own activity"],["Administrator","Yes","All cases","Yes","Yes","All activity"]].map(r=>`<tr>${r.map((v,i)=>`<td>${i===0?`<b>${v}</b>`:v}</td>`).join("")}</tr>`).join("")}</tbody></table><div class="notice">Access should be checked against the user's role, assigned case and document permissions before viewing or downloading a file. This table is illustrative; enforce permissions on the server in a production system.</div><p style="font-size:12px;color:#718096">Current signed-in role: <b>${escapeHtml(currentRole)}</b></p></div>`}
+}
+function reqRows(list,admin){return list.map(r=>`<tr><td><b>${escapeHtml(r.id)}</b></td><td><span class="doc-name">${escapeHtml(r.docName)}</span><span class="doc-sub">${escapeHtml(r.docCase)}</span></td>${admin?`<td>${escapeHtml(r.user)}<span class="doc-sub">${escapeHtml(r.role)}</span></td>`:""}<td>${escapeHtml(r.reason)}<span class="doc-sub">${escapeHtml(r.time)}</span></td><td><span class="tag ${r.status==="Pending"?"pending":r.status==="Denied"?"locked":""}">${r.status}</span></td>${admin?`<td>${r.status==="Pending"?`<button class="table-action" onclick="decideRequest('${r.id}',true)">Approve</button> <button class="table-action deny-btn" onclick="decideRequest('${r.id}',false)">Deny</button>`:""}</td>`:""}</tr>`).join("")}
+function requestsPanel(){
+ const admin=currentRole==="Administrator",list=admin?requests:requests.filter(r=>ukey(r.user)===ukey(currentUser));
+ const body=list.length?`<div class="table-wrap"><table><thead><tr><th>Request</th><th>Document</th>${admin?"<th>Requested by</th>":""}<th>Reason</th><th>Status</th>${admin?"<th></th>":""}</tr></thead><tbody>${reqRows(list,admin)}</tbody></table></div>`:`<div class="empty">${admin?"No access requests yet. Sign in as another role, open a restricted document and choose “Get access”.":"You have no access requests. Open a restricted document and choose “Get access” to ask an administrator."}</div>`;
+ return `<div class="panel"><div class="panel-head"><h3>${admin?"Access requests":"My access requests"}</h3><small>${list.filter(r=>r.status==="Pending").length} pending</small></div>${body}</div>`;
+}
+function go(p){page=p;document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));render()}
+function filterDocs(){let q=$("docSearch").value.toLowerCase(),s=$("statusFilter").value;let found=docs.filter(d=>(!s||d.status===s)&&[d.name,d.id,d.case,d.type,d.date,d.owner,d.access].join(" ").toLowerCase().includes(q));$("docResults").innerHTML=docTable(found)}
+function caseSearch(id){go("documents");setTimeout(()=>{$("docSearch").value=id;filterDocs()},0)}
+function viewDoc(id){
+ const d=docs.find(x=>x.id===id);if(!d)return;
+ const a=accessCheck(d);
+ if(a.ok){
+  log("Document viewed",d.name+" · "+currentUser);
+  openModal(`<h2 style="text-align:left">▤ ${escapeHtml(d.name)}</h2><div class="meta">${escapeHtml(d.id)} · ${escapeHtml(d.case)} · ${escapeHtml(d.type)}<br>Classification: <b>${escapeHtml(d.access)}</b> · Uploaded ${escapeHtml(d.date)} by ${escapeHtml(d.owner)}<br>Access basis: ${escapeHtml(a.why)}</div><div class="viewer"><div class="big">▤</div><p>Demo preview. A real system would stream the decrypted file here after a server-side permission check.</p></div><div class="modal-actions"><button class="secondary" onclick="closeModal()">Close</button></div>`,true);
+  rerender();return;
+ }
+ log("Access denied",d.name+" · "+currentUser+" ("+currentRole+")");
+ const p=myPending(d);
+ openModal(`<div class="lock-badge">🔒</div><h2>Access restricted</h2><p class="lead">You don’t have permission to view <b>${escapeHtml(d.name)}</b>.</p><div class="why"><b>Why:</b> ${escapeHtml(a.why)}</div><div class="meta">${escapeHtml(d.id)} · ${escapeHtml(d.case)} · ${escapeHtml(d.access)}</div>${p?`<div class="notice" style="margin:0">Your access request (submitted ${escapeHtml(p.time)}) is pending administrator review.</div><div class="modal-actions"><button class="secondary" onclick="closeModal()">Close</button></div>`:`<label style="font-size:13px;font-weight:650;display:block;margin-bottom:8px" for="reqReason">Request access from an administrator</label><textarea id="reqReason" placeholder="Why do you need this document? (required)"></textarea><div class="modal-actions"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="requestAccess('${d.id}')">Get access</button></div>`}`);
+ rerender();
+}
+function requestAccess(id){
+ const d=docs.find(x=>x.id===id);if(!d||myPending(d))return;
+ const reason=($("reqReason").value||"").trim();
+ if(reason.length<5){toast("Please give a short reason for the request.");return}
+ requests.unshift({id:"REQ-"+(2000+reqSeq++),docId:d.id,docName:d.name,docCase:d.case,user:currentUser,role:currentRole,reason,status:"Pending",time:new Date().toLocaleString()});
+ log("Access requested",d.name+" · "+currentUser+" ("+currentRole+")");
+ closeModal();toast("Access request sent to an administrator.");rerender();
+}
+function decideRequest(id,approve){
+ if(currentRole!=="Administrator")return;
+ const r=requests.find(x=>x.id===id);if(!r||r.status!=="Pending")return;
+ r.status=approve?"Approved":"Denied";r.decidedBy=currentUser;
+ if(approve)grants.add(ukey(r.user)+"|"+r.docId);
+ log(approve?"Access approved":"Access denied (request)",r.docName+" · "+r.user+" · by "+currentUser);
+ toast(approve?"Access granted to "+r.user+".":"Request denied.");render();
+}
+function uploadDoc(e){e.preventDefault();let file=$("fileInput").files[0],name=$("docTitle").value.trim()||(file?file.name:"");if(!name){toast("Please enter a document title.");return}if(file&&!/\.(pdf|doc|docx|jpg|jpeg|png)$/i.test(file.name)){toast("Unsupported file type.");return}let d={name,id:"DOC-"+(1006+docs.length),case:$("caseId").value.trim(),type:$("docType").value,date:new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}),owner:currentUser,uploadedBy:currentUser,status:"Pending",access:$("docAccess").value};docs.unshift(d);log("Document uploaded",d.name+" · "+currentUser);toast("Document added to demo workspace. Verification pending.");go("documents")}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+</script>
+</body></html>
